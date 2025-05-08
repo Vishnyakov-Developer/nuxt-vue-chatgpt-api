@@ -1,3 +1,3 @@
 <template>
-  <footer>FOOTER BLOCK</footer>
+  <footer></footer>
 </template>

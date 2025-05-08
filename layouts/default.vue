@@ -1,8 +1,8 @@
 <template>
   <div class="layout">
     <HeaderBlock />
-    <main class="mb-[40px] mt-[100px]" style="min-height: 500px">
-      <slot />
+    <main class="" style="">
+      <slot class="" />
     </main>
     <FooterBlock />
   </div>
