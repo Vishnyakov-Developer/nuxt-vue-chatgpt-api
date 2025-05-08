@@ -3,5 +3,5 @@ import rateLimit from '../api/middleware/rateLimit';
 
 export default defineEventHandler(async (event) => {
   
-  await rateLimit(event)
+  // await rateLimit(event)
 });
