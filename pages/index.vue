@@ -1,36 +1,9 @@
 <template>
-  <div class="pt-[50px]" @keyup.enter="handleEnter">
+  <div class="">
     <Container>
-      <!-- <button class="bg-white" @click="testRequest">CONTENT APP</button> -->
-      <div>
-        <div class="bg-secondary_bg flex h-[70px] w-[70px] items-center justify-center rounded-sm">
-          <chatIcon />
-        </div>
-        <p class="text-text_color mt-[70px] text-[40px] font-semibold">Hi there!</p>
-        <p class="text-text_color mt-[30px] text-[45px] font-bold">What would you like to know?</p>
-        <p class="text-text_color mt-[10px] text-[22px] font-light opacity-70">
-          Use one of the most common prompts below
-          <br />
-          or ask your own question
-        </p>
-        <div
-          class="border-secondary_bg mt-[30px] box-border flex h-[70px] w-[600px] overflow-hidden rounded-sm border-[3px] pl-[15px]"
-        >
-          <input
-            type="text"
-            placeholder="Ask whatever you want"
-            class="border text-text_color w-full border-none bg-transparent outline-none"
-          />
-          <div
-            @click="testRequest"
-            class="bg-secondary_bg flex cursor-pointer items-center justify-center rounded-[5px] px-[20px] opacity-90 transition-all hover:opacity-60"
-          >
-            <arrowIcon />
-          </div>
-        </div>
-      </div>
+      <InputGPT @text="text = $event" @send="sendMessage" />
       <div
-        class="mt-[50px] flex flex-col gap-[20px] overflow-hidden transition-all duration-500"
+        class="mt-[50px] flex flex-col gap-[20px] overflow-hidden pb-[50px] transition-all duration-500"
         :class="answersGPT.length ? `translate-x-0 opacity-100` : 'translate-x-20 opacity-0'"
       >
         <div
@@ -45,6 +18,11 @@
             <div v-if="!answer.loaded" class="">
               <CirclesMessageAnimation class="w-fit" :count="3" />
             </div>
+            <div
+              class="max-w-[100%] overflow-x-auto bg-white p-[10px] text-[23px] font-bold"
+              v-html="renderAnsw(answer.text.content)"
+              v-else
+            ></div>
           </div>
         </div>
       </div>
@@ -56,9 +34,10 @@
 import Container from '~/components/Container.vue'
 import CirclesMessageAnimation from '~/components/CirclesMessageAnimation.vue'
 import requestDefault from '~/api/requestDefault'
+import requestMessage from '~/api/requestMessage'
+import renderMarkdown from '~/utils/markdownRenderer'
 
-import chatIcon from '~/components/Icons/chatIcon.vue'
-import arrowIcon from '~/components/Icons/arrowIcon.vue'
+import InputGPT from '~/components/InputGPT.vue'
 import getRandToken from '~/utils/getRandToken'
 import moment from 'moment'
 
@@ -68,28 +47,41 @@ onMounted(() => {
   }, 1000)
 })
 
-const answersGPT = ref([])
-
-const handleEnter = () => {
-  alert('Enter pressed')
+const renderAnsw = text => {
+  const rendered = renderMarkdown(text)
+  return rendered
 }
 
-const testRequest = async () => {
+const answersGPT = ref([])
+const sentMessages = ref([])
+const text = ref('')
+
+const sendMessage = async () => {
   if (answersGPT.value[answersGPT.value.length - 1]?.loaded === false) {
     useNuxtApp().$toaster('Please wait for the previous answer', 'error')
     return
   }
 
-  answersGPT.value.push({
+  const genId = moment().format('DD.MM.YYYY HH:mm')
+
+  answersGPT.value.unshift({
     loaded: false,
     id: getRandToken(10),
-    date_string: moment().format('DD.MM.YYYY HH:mm'),
+    date_string: genId,
   })
-  // requestDefault().then(useNuxtApp().$toaster('Request was successful', 'success'))
 
-  //   .catch(err => {
-  //     useNuxtApp().$toaster('Request failed', 'error')
-  //     console.error(err)
-  //   })
+  sentMessages.value.push(text.value)
+  text.value = text.value = ''
+
+  requestMessage({ messages: sentMessages.value })
+    .then(response => {
+      answersGPT.value[0].loaded = true
+      answersGPT.value[0].text = response
+    })
+    .catch(err => {
+      console.log(err)
+      answersGPT.value.pop()
+      useNuxtApp().$toaster(err, 'error')
+    })
 }
 </script>

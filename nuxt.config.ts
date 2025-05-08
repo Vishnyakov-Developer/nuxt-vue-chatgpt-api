@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
   runtimeConfig: {
-    secretKey: process.env.CHATGPT_API_KEY || 'your-secret-key'
+    CHATGPT_API_KEY: process.env.CHATGPT_API_KEY || 'your-secret-key'
   },
   postcss: {
     plugins: {
