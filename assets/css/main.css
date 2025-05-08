@@ -4,12 +4,12 @@
 @tailwind utilities;
 :root {
   --mainFont: $mainFont;
-  --backgroundColor: #111111;
-  --mainColor: #4c91c7;
+  --backgroundColor: #00285f;
+  --mainColor: #485798;
 }
 
 body {
-  background: #111111;
+  background: #00285f;
   font-family: "Montserrat", sans-serif;
 }
 
@@ -17,4 +17,15 @@ a,
 a:visited {
   color: inherit;
   text-decoration: none;
-} /*# sourceMappingURL=main.css.map */
+}
+
+.nodrag {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}/*# sourceMappingURL=main.css.map */

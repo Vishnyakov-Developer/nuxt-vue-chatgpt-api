@@ -13,6 +13,20 @@
           <br />
           or ask your own question
         </p>
+        <div
+          class="border-secondary_bg mt-[30px] box-border flex h-[70px] w-[600px] overflow-hidden rounded-sm border-[3px] pl-[15px]"
+        >
+          <input
+            type="text"
+            placeholder="Ask whatever you want"
+            class="border text-text_color w-full border-none bg-transparent outline-none"
+          />
+          <div
+            class="bg-secondary_bg flex cursor-pointer items-center justify-center rounded-[5px] px-[20px] opacity-90 transition-all hover:opacity-60"
+          >
+            <arrowIcon />
+          </div>
+        </div>
       </div>
     </Container>
   </div>
@@ -20,11 +34,15 @@
 
 <script setup>
 import Container from '~/components/Container.vue'
-import chatIcon from '~/components/Icons/chatIcon.vue'
 import requestDefault from '~/api/requestDefault'
 
+import chatIcon from '~/components/Icons/chatIcon.vue'
+import arrowIcon from '~/components/Icons/arrowIcon.vue'
+
 onMounted(() => {
-  useNuxtApp().$setLoader(false)
+  setTimeout(() => {
+    useNuxtApp().$setLoader(false)
+  }, 1000)
 })
 
 const testRequest = async () => {

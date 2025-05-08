@@ -1,6 +1,5 @@
 <template>
   <NuxtLayout>
-    <ModalContact :show="modal.contact.show" @close="modal.contact.show = false" />
     <Loader v-model="hiddenLoader" />
     <Toaster v-model="toastShow" :text="toastText" :type="toastType" />
     <NuxtPage />
@@ -39,10 +38,6 @@ function showToaster(text, type) {
   toastType.value = type
   toastShow.value = true
 }
-
-useRouter().beforeEach(to => {
-  hiddenLoader.value = true
-})
 </script>
 
 <style lang="scss">
