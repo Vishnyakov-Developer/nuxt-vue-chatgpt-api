@@ -33,14 +33,12 @@ export default {
         '3xl': '18px',
         '4xl': '20px',
         '5xl': '22px',
-        '27px': '27px',
         '6xl': '64px',
       },
       colors: {
-        background: '#111111',
-        section: '#090909',
-        text_primary: '#FFFFFF',
-        accent: '#4C91C7',
+        background: '#00285F',
+        secondary_bg: '#124290',
+        text_color: '#ECF0F5'
       },
     },
   },
